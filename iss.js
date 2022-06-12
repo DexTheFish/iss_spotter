@@ -39,6 +39,9 @@ const fetchCoordsByIP = function(ip, callback) {
   });
 };
 
+/**
+ * Makes a single API request to retrieve ISS flyover times based on geographic coordinates.
+ */
 const fetchISSFlyOverTimes = function(coordinates, callback) {
   const url = `https://iss-pass.herokuapp.com/json/?lat=${coordinates.latitude}&lon=${coordinates.longitude}`;
   request(url, (error, response, body) => {
@@ -55,4 +58,20 @@ const fetchISSFlyOverTimes = function(coordinates, callback) {
   });
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
+/**
+ * Chains several API requests to retrieve flyover times
+ */
+const nextISSTimesForMyLocation = function (callback) {
+  fetchMyIP((error, ip) => {
+    //check4error
+    fetchCoordsByIP(ip, (error, coords) => {
+      //check4error
+      fetchISSFlyOverTimes(coords, (error, times) => {
+        //check4error
+        callback(error, times);
+      })
+    })
+    })
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation };
