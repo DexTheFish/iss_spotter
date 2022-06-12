@@ -1,10 +1,23 @@
 const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation } = require('./iss');
 
-const myIP = '38.147.245.197';
-const myCoords = { latitude: 40.7589111328125, longitude: -73.97901916503906 };
-let testing = false;
+nextISSTimesForMyLocation((error, times) => {
+  if (error) {
+    console.log("It didn't work! Failed to fetch flyover times. \n", error);
+    return;
+  }
+  console.log("It worked! Flyover times: \n", times);
+})
 
+
+
+const testing = false;
 if (testing) {
+
+  // creating some data to pass to the functions
+  const mockData = {
+    ip: '38.147.245.197',
+    coords: { latitude: 40.7589111328125, longitude: -73.97901916503906 }
+  };
 
   // testing the fetchMyIP function
   fetchMyIP((error, ip) => {
@@ -16,7 +29,7 @@ if (testing) {
   });
   
   // testing the fetchCoordsByIP function
-  fetchCoordsByIP(myIP, (error, coords) => {
+  fetchCoordsByIP(mockData.ip, (error, coords) => {
     if (error) {
       console.log('It didn\'t work! Failed to fetch coordinates. \n', error);
       return;
@@ -25,17 +38,12 @@ if (testing) {
   });
   
   // testing the fetchISSFlyOverTimes function
-  fetchISSFlyOverTimes(myCoords, (error, times) => {
+  fetchISSFlyOverTimes(mockData.coords, (error, times) => {
     if (error) {
       console.log('bad bad things', error);
       return;
     }
     console.log('good times', times);
   });
+
 }
-
-
-nextISSTimesForMyLocation((error, times) => {
-  //check4error
-  console.log('good times', times);
-})

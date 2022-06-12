@@ -63,13 +63,16 @@ const fetchISSFlyOverTimes = function(coordinates, callback) {
  */
 const nextISSTimesForMyLocation = function (callback) {
   fetchMyIP((error, ip) => {
-    //check4error
+    if (error) {
+      console.log("It didn't work! Failed to fetch IP. \n" , error);
+      return;
+    }
     fetchCoordsByIP(ip, (error, coords) => {
-      //check4error
-      fetchISSFlyOverTimes(coords, (error, times) => {
-        //check4error
-        callback(error, times);
-      })
+      if (error) {
+        console.log("It didn't work! Failed to fetch coordinates. \n", error);
+        return;
+      }
+      fetchISSFlyOverTimes(coords, callback);
     })
     })
 };
