@@ -1,11 +1,20 @@
 const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation } = require('./iss');
 
+
+changeTimeToDate = function(t) {
+  // no functionality yet
+  return t;
+}
+
 nextISSTimesForMyLocation((error, times) => {
   if (error) {
     console.log("It didn't work! Failed to fetch flyover times. \n", error);
     return;
   }
-  console.log("It worked! Flyover times: \n", times);
+  for (const time of times.response) {
+    riseTime = changeTimeToDate(time.risetime);
+    console.log(`Next flyover at ${riseTime} for ${time.duration} seconds!`);
+  }
 })
 
 
