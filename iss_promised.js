@@ -14,14 +14,14 @@ const fetchISSFlyOverTimes = function(body) {
   return request(`https://iss-pass.herokuapp.com/json/?lat=${latitude}&lon=${longitude}`);
 };
 
-const nextISSTimesForMyLocation = function(callback) {
-  fetchMyIP()
+const nextISSTimesForMyLocation = function() {
+  return fetchMyIP()
     .then(fetchCoordsByIP)
     .then(fetchISSFlyOverTimes)
     .then(body => {
       const { response } = JSON.parse(body);
-      callback(response);
-    })
+      return response;
+    });
 }
 
 module.exports = { nextISSTimesForMyLocation };
